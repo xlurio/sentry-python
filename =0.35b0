@@ -1,0 +1,28 @@
+Collecting opentelemetry-distro
+  Downloading opentelemetry_distro-0.38b0-py3-none-any.whl (3.3 kB)
+Collecting opentelemetry-api~=1.12 (from opentelemetry-distro)
+  Downloading opentelemetry_api-1.17.0-py3-none-any.whl (57 kB)
+     ━━━━━━━ 57.3/5… 508.4   eta 0:00:00
+             kB      kB/s               
+Collecting opentelemetry-instrumentation==0.38b0 (from opentelemetry-distro)
+  Downloading opentelemetry_instrumentation-0.38b0-py3-none-any.whl (24 kB)
+Collecting opentelemetry-sdk~=1.13 (from opentelemetry-distro)
+  Downloading opentelemetry_sdk-1.17.0-py3-none-any.whl (100 kB)
+     ━━━━━━━ 100.0/… 570.4   eta 0:00:00
+             kB      kB/s               
+Requirement already satisfied: setuptools>=16.0 in ./venv/lib/python3.11/site-packages (from opentelemetry-instrumentation==0.38b0->opentelemetry-distro) (65.5.0)
+Collecting wrapt<2.0.0,>=1.0.0 (from opentelemetry-instrumentation==0.38b0->opentelemetry-distro)
+  Downloading wrapt-1.15.0-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (78 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.9/78.9 kB 506.7 kB/s eta 0:00:00
+Collecting deprecated>=1.2.6 (from opentelemetry-api~=1.12->opentelemetry-distro)
+  Using cached Deprecated-1.2.13-py2.py3-none-any.whl (9.6 kB)
+Collecting importlib-metadata~=6.0.0 (from opentelemetry-api~=1.12->opentelemetry-distro)
+  Downloading importlib_metadata-6.0.1-py3-none-any.whl (21 kB)
+Collecting opentelemetry-semantic-conventions==0.38b0 (from opentelemetry-sdk~=1.13->opentelemetry-distro)
+  Downloading opentelemetry_semantic_conventions-0.38b0-py3-none-any.whl (26 kB)
+Collecting typing-extensions>=3.7.4 (from opentelemetry-sdk~=1.13->opentelemetry-distro)
+  Using cached typing_extensions-4.5.0-py3-none-any.whl (27 kB)
+Collecting zipp>=0.5 (from importlib-metadata~=6.0.0->opentelemetry-api~=1.12->opentelemetry-distro)
+  Using cached zipp-3.15.0-py3-none-any.whl (6.8 kB)
+Installing collected packages: zipp, wrapt, typing-extensions, opentelemetry-semantic-conventions, importlib-metadata, deprecated, opentelemetry-api, opentelemetry-sdk, opentelemetry-instrumentation, opentelemetry-distro
+Successfully installed deprecated-1.2.13 importlib-metadata-6.0.1 opentelemetry-api-1.17.0 opentelemetry-distro-0.38b0 opentelemetry-instrumentation-0.38b0 opentelemetry-sdk-1.17.0 opentelemetry-semantic-conventions-0.38b0 typing-extensions-4.5.0 wrapt-1.15.0 zipp-3.15.0

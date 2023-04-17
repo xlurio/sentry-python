@@ -9,6 +9,7 @@ MYPY = TYPE_CHECKING
 
 
 if TYPE_CHECKING:
+    import datetime
     from types import TracebackType
     from typing import Any
     from typing import Callable
@@ -18,10 +19,69 @@ if TYPE_CHECKING:
     from typing import Type
     from typing import Union
     from typing_extensions import Literal
+    from typing import NotRequired
+    from typing import TypedDict
+    from opentelemetry.trace import SpanContext
 
     ExcInfo = Tuple[
         Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]
     ]
+
+
+    class Contexts(TypedDict):
+        trace: NotRequired[SpanContext]
+        browser: NotRequired[Browser]
+        device: NotRequired[Device]
+        os: NotRequired[OperatingSystem]
+        runtime: NotRequired[Runtime]
+
+
+    class SentryStackFrame(TypedDict):
+        function: NotRequired[str]
+        module: NotRequired[str]
+        filename: NotRequired[str]
+        abs_path: NotRequired[str]
+        lineno: NotRequired[int]
+        pre_context: NotRequired[list[str]]
+        context_line: NotRequired[str]
+        post_context: NotRequired[list[str]]
+        vars: NotRequired[Dict[str, Any]]
+
+
+    class Mechanism(TypedDict):
+        type: str
+        handled: bool
+        meta: dict[str, Any]
+        errno: dict[str, Any]
+        number: NotRequired[int]
+
+
+    class SentryException(TypedDict):
+        type: NotRequired[str]
+        value: NotRequired[str]
+        module: NotRequired[str]
+        mechanism: NotRequired[Mechanism]
+        stacktrace: NotRequired[list[SentryStackFrame]]
+
+
+    class SentryEvent(TypedDict):
+        event_id: NotRequired[str]
+        contexts: Contexts
+        sdk: NotRequired[SDKVersion]
+        request: NotRequired[Request]
+        tags: NotRequired[Dict[str, str]]
+        release: NotRequired[str]
+        environment: NotRequired[str]
+        platform: NotRequired[str]
+        user: NotRequired[User]
+        server_name: NotRequired[str]
+        dist: NotRequired[str]
+        breadcrumbs: NotRequired[list[Breadcrumb]]
+        timestamp: datetime.date
+        message: NotRequired[str]
+        logger: NotRequired[str]
+        level: NotRequired[str]
+        exception: NotRequired[list[SentryException]]
 
     Event = Dict[str, Any]
     Hint = Dict[str, Any]

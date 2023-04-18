@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from typing import List
     from typing import Iterator
 
-    from sentry_sdk._types import Event, EventDataCategory
+    from sentry_sdk._types import SentryEvent, EventDataCategory
 
 
 def parse_json(data):
@@ -95,7 +95,7 @@ class Envelope(object):
         self.items.append(item)
 
     def get_event(self):
-        # type: (...) -> Optional[Event]
+        # type: (...) -> Optional[SentryEvent]
         for items in self.items:
             event = items.get_event()
             if event is not None:
@@ -103,7 +103,7 @@ class Envelope(object):
         return None
 
     def get_transaction_event(self):
-        # type: (...) -> Optional[Event]
+        # type: (...) -> Optional[SentryEvent]
         for item in self.items:
             event = item.get_transaction_event()
             if event is not None:
@@ -268,7 +268,7 @@ class Item(object):
         return self.payload.get_bytes()
 
     def get_event(self):
-        # type: (...) -> Optional[Event]
+        # type: (...) -> Optional[SentryEvent]
         """
         Returns an error event if there is one.
         """
@@ -277,7 +277,7 @@ class Item(object):
         return None
 
     def get_transaction_event(self):
-        # type: (...) -> Optional[Event]
+        # type: (...) -> Optional[SentryEvent]
         if self.type == "transaction" and self.payload.json is not None:
             return self.payload.json
         return None

@@ -19,7 +19,7 @@ from sentry_sdk.utils import (
 if TYPE_CHECKING:
     from typing import Any, Callable, Optional, Union, TypeVar
 
-    from sentry_sdk._types import EventProcessor, Event, Hint
+    from sentry_sdk._types import EventProcessor, SentryEvent, Hint
     from sentry_sdk.utils import ExcInfo
 
     F = TypeVar("F", bound=Callable[..., Any])
@@ -64,7 +64,7 @@ def patch_enqueue():
 def _make_event_processor(task):
     # type: (Any) -> EventProcessor
     def event_processor(event, hint):
-        # type: (Event, Hint) -> Optional[Event]
+        # type: (SentryEvent, Hint) -> Optional[SentryEvent]
 
         with capture_internal_exceptions():
             tags = event.setdefault("tags", {})

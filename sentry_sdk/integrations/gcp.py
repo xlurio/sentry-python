@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from typing import Callable
     from typing import Optional
 
-    from sentry_sdk._types import EventProcessor, Event, Hint
+    from sentry_sdk._types import EventProcessor, SentryEvent, Hint
 
     F = TypeVar("F", bound=Callable[..., Any])
 
@@ -149,7 +149,7 @@ def _make_request_event_processor(gcp_event, configured_timeout, initial_time):
     # type: (Any, Any, Any) -> EventProcessor
 
     def event_processor(event, hint):
-        # type: (Event, Hint) -> Optional[Event]
+        # type: (SentryEvent, Hint) -> Optional[SentryEvent]
 
         final_time = datetime.utcnow()
         time_diff = final_time - initial_time

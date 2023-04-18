@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from typing import Optional
     from typing import List
 
-    from sentry_sdk._types import Event, Hint
+    from sentry_sdk._types import SentryEvent, Hint
 
 
 try:
@@ -51,7 +51,7 @@ class StdlibIntegration(Integration):
 
         @add_global_event_processor
         def add_python_runtime_context(event, hint):
-            # type: (Event, Hint) -> Optional[Event]
+            # type: (SentryEvent, Hint) -> Optional[SentryEvent]
             if Hub.current.get_integration(StdlibIntegration) is not None:
                 contexts = event.setdefault("contexts", {})
                 if isinstance(contexts, dict) and "runtime" not in contexts:

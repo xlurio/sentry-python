@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
     from sentry_sdk._types import (
         Breadcrumb,
-        Event,
+        SentryEvent,
         EventProcessor,
         ErrorProcessor,
         ExcInfo,
@@ -350,7 +350,7 @@ class Scope(object):
             real_func = func
 
             def func(event, exc_info):
-                # type: (Event, ExcInfo) -> Optional[Event]
+                # type: (SentryEvent, ExcInfo) -> Optional[SentryEvent]
                 try:
                     is_inst = isinstance(exc_info[1], cls_)
                 except Exception:
@@ -367,7 +367,7 @@ class Scope(object):
         event,  # type: Event
         hint,  # type: Hint
     ):
-        # type: (...) -> Optional[Event]
+        # type: (...) -> Optional[SentryEvent]
         """Applies the information contained on the scope to the given event."""
 
         def _drop(cause, ty):

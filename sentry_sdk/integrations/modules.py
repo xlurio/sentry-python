@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from typing import Tuple
     from typing import Iterator
 
-    from sentry_sdk._types import Event
+    from sentry_sdk._types import SentryEvent
 
 
 _installed_modules = None
@@ -45,7 +45,7 @@ class ModulesIntegration(Integration):
         # type: () -> None
         @add_global_event_processor
         def processor(event, hint):
-            # type: (Event, Any) -> Dict[str, Any]
+            # type: (SentryEvent, Any) -> Dict[str, Any]
             if event.get("type") == "transaction":
                 return event
 

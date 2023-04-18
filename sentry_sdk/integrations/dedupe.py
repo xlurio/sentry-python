@@ -8,7 +8,7 @@ from sentry_sdk._types import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Optional
 
-    from sentry_sdk._types import Event, Hint
+    from sentry_sdk._types import SentryEvent, Hint
 
 
 class DedupeIntegration(Integration):
@@ -23,7 +23,7 @@ class DedupeIntegration(Integration):
         # type: () -> None
         @add_global_event_processor
         def processor(event, hint):
-            # type: (Event, Optional[Hint]) -> Optional[Event]
+            # type: (SentryEvent, Optional[Hint]) -> Optional[SentryEvent]
             if hint is None:
                 return event
 

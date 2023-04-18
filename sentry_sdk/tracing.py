@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from typing import Tuple
 
     import sentry_sdk.profiler
-    from sentry_sdk._types import Event, MeasurementUnit, SamplingContext
+    from sentry_sdk._types import SentryEvent, MeasurementUnit, SamplingContext
 
 
 BAGGAGE_HEADER_NAME = "baggage"

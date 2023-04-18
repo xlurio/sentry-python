@@ -32,13 +32,13 @@ if TYPE_CHECKING:
     from typing import Any
     from typing import Dict
     from typing import Union
-    from sentry_sdk._types import Event, Hint
+    from sentry_sdk._types import SentryEvent, Hint
 
 OPEN_TELEMETRY_CONTEXT = "otel"
 
 
 def link_trace_context_to_error_event(event, otel_span_map):
-    # type: (Event, Dict[str, Union[Transaction, OTelSpan]]) -> Event
+    # type: (SentryEvent, Dict[str, Union[Transaction, OTelSpan]]) -> Event
     hub = Hub.current
     if not hub:
         return event
@@ -89,7 +89,7 @@ class SentrySpanProcessor(SpanProcessor):  # type: ignore
         # type: () -> None
         @add_global_event_processor
         def global_event_processor(event, hint):
-            # type: (Event, Hint) -> Event
+            # type: (SentryEvent, Hint) -> Event
             return link_trace_context_to_error_event(event, self.otel_span_map)
 
     def on_start(self, otel_span, parent_context=None):

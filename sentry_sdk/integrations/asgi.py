@@ -37,7 +37,7 @@ if TYPE_CHECKING:
 
     from typing_extensions import Literal
 
-    from sentry_sdk._types import Event, Hint
+    from sentry_sdk._types import SentryEvent, Hint
 
 
 _asgi_middleware_applied = ContextVar("sentry_asgi_middleware_applied")
@@ -190,7 +190,7 @@ class SentryAsgiMiddleware:
             _asgi_middleware_applied.set(False)
 
     def event_processor(self, event, hint, asgi_scope):
-        # type: (Event, Hint, Any) -> Optional[Event]
+        # type: (SentryEvent, Hint, Any) -> Optional[SentryEvent]
         request_info = event.get("request", {})
 
         ty = asgi_scope["type"]
@@ -222,7 +222,7 @@ class SentryAsgiMiddleware:
     # for that.
 
     def _set_transaction_name_and_source(self, event, transaction_style, asgi_scope):
-        # type: (Event, str, Any) -> None
+        # type: (SentryEvent, str, Any) -> None
         transaction_name_already_set = (
             event.get("transaction", _DEFAULT_TRANSACTION_NAME)
             != _DEFAULT_TRANSACTION_NAME

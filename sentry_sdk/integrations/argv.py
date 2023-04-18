@@ -11,7 +11,7 @@ from sentry_sdk._types import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Optional
 
-    from sentry_sdk._types import Event, Hint
+    from sentry_sdk._types import SentryEvent, Hint
 
 
 class ArgvIntegration(Integration):
@@ -22,7 +22,7 @@ class ArgvIntegration(Integration):
         # type: () -> None
         @add_global_event_processor
         def processor(event, hint):
-            # type: (Event, Optional[Hint]) -> Optional[Event]
+            # type: (SentryEvent, Optional[Hint]) -> Optional[SentryEvent]
             if Hub.current.get_integration(ArgvIntegration) is not None:
                 extra = event.setdefault("extra", {})
                 # If some event processor decided to set extra to e.g. an

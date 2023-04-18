@@ -7,7 +7,7 @@ from sentry_sdk._compat import string_types
 from sentry_sdk._types import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from sentry_sdk._types import Event
+    from sentry_sdk._types import SentryEvent
     from typing import Any
     from typing import Dict
     from typing import List
@@ -74,7 +74,7 @@ class EventScrubber(object):
                 d[k] = AnnotatedValue.substituted_because_contains_sensitive_data()
 
     def scrub_request(self, event):
-        # type: (Event) -> None
+        # type: (SentryEvent) -> None
         with capture_internal_exceptions():
             if "request" in event:
                 if "headers" in event["request"]:
@@ -85,19 +85,19 @@ class EventScrubber(object):
                     self.scrub_dict(event["request"]["data"])
 
     def scrub_extra(self, event):
-        # type: (Event) -> None
+        # type: (SentryEvent) -> None
         with capture_internal_exceptions():
             if "extra" in event:
                 self.scrub_dict(event["extra"])
 
     def scrub_user(self, event):
-        # type: (Event) -> None
+        # type: (SentryEvent) -> None
         with capture_internal_exceptions():
             if "user" in event:
                 self.scrub_dict(event["user"])
 
     def scrub_breadcrumbs(self, event):
-        # type: (Event) -> None
+        # type: (SentryEvent) -> None
         with capture_internal_exceptions():
             if "breadcrumbs" in event:
                 if "values" in event["breadcrumbs"]:
@@ -106,14 +106,14 @@ class EventScrubber(object):
                             self.scrub_dict(value["data"])
 
     def scrub_frames(self, event):
-        # type: (Event) -> None
+        # type: (SentryEvent) -> None
         with capture_internal_exceptions():
             for frame in iter_event_frames(event):
                 if "vars" in frame:
                     self.scrub_dict(frame["vars"])
 
     def scrub_spans(self, event):
-        # type: (Event) -> None
+        # type: (SentryEvent) -> None
         with capture_internal_exceptions():
             if "spans" in event:
                 for span in event["spans"]:
@@ -121,7 +121,7 @@ class EventScrubber(object):
                         self.scrub_dict(span["data"])
 
     def scrub_event(self, event):
-        # type: (Event) -> None
+        # type: (SentryEvent) -> None
         self.scrub_request(event)
         self.scrub_extra(event)
         self.scrub_user(event)

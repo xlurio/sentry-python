@@ -27,7 +27,7 @@ if TYPE_CHECKING:
     from typing import TypeVar
     from typing import Union
 
-    from sentry_sdk._types import EventProcessor, Event, Hint, ExcInfo
+    from sentry_sdk._types import EventProcessor, SentryEvent, Hint, ExcInfo
 
     F = TypeVar("F", bound=Callable[..., Any])
 
@@ -236,7 +236,7 @@ def _wrap_task_call(task, f):
 def _make_event_processor(task, uuid, args, kwargs, request=None):
     # type: (Any, Any, Any, Any, Optional[Any]) -> EventProcessor
     def event_processor(event, hint):
-        # type: (Event, Hint) -> Optional[Event]
+        # type: (SentryEvent, Hint) -> Optional[SentryEvent]
 
         with capture_internal_exceptions():
             tags = event.setdefault("tags", {})

@@ -1123,7 +1123,7 @@ class TimeoutThread(threading.Thread):
         threading.Thread.__init__(self)
         self.waiting_time = waiting_time
         self.configured_timeout = configured_timeout
-        self._stop_event = threading.Event()
+        self._stop_event = threading.SentryEvent()
 
     def stop(self):
         # type: () -> None

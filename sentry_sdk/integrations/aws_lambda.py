@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from typing import Callable
     from typing import Optional
 
-    from sentry_sdk._types import EventProcessor, Event, Hint
+    from sentry_sdk._types import EventProcessor, SentryEvent, Hint
 
     F = TypeVar("F", bound=Callable[..., Any])
 
@@ -324,7 +324,7 @@ def _make_request_event_processor(aws_event, aws_context, configured_timeout):
     start_time = datetime.utcnow()
 
     def event_processor(sentry_event, hint, start_time=start_time):
-        # type: (Event, Hint, datetime) -> Optional[Event]
+        # type: (SentryEvent, Hint, datetime) -> Optional[SentryEvent]
         remaining_time_in_milis = aws_context.get_remaining_time_in_millis()
         exec_duration = configured_timeout - remaining_time_in_milis
 

@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from urllib3.poolmanager import PoolManager  # type: ignore
     from urllib3.poolmanager import ProxyManager
 
-    from sentry_sdk._types import Event, EndpointType
+    from sentry_sdk._types import SentryEvent, EndpointType
 
     DataCategory = Optional[str]
 
@@ -500,7 +500,7 @@ class HttpTransport(Transport):
 
 class _FunctionTransport(Transport):
     def __init__(
-        self, func  # type: Callable[[Event], None]
+        self, func  # type: Callable[[SentryEvent], None]
     ):
         # type: (...) -> None
         Transport.__init__(self)

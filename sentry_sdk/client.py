@@ -43,7 +43,7 @@ if TYPE_CHECKING:
     from typing import Sequence
 
     from sentry_sdk.scope import Scope
-    from sentry_sdk._types import Event, Hint
+    from sentry_sdk._types import SentryEvent, Hint
     from sentry_sdk.session import Session
 
 
@@ -255,7 +255,7 @@ class _Client(object):
         hint,  # type: Hint
         scope,  # type: Optional[Scope]
     ):
-        # type: (...) -> Optional[Event]
+        # type: (...) -> Optional[SentryEvent]
 
         if event.get("timestamp") is None:
             event["timestamp"] = datetime.utcnow()
@@ -351,7 +351,7 @@ class _Client(object):
         return event
 
     def _is_ignored_error(self, event, hint):
-        # type: (Event, Hint) -> bool
+        # type: (SentryEvent, Hint) -> bool
         exc_info = hint.get("exc_info")
         if exc_info is None:
             return False

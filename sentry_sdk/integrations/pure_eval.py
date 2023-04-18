@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from typing import Optional, Dict, Any, Tuple, List
     from types import FrameType
 
-    from sentry_sdk._types import Event, Hint
+    from sentry_sdk._types import SentryEvent, Hint
 
 try:
     import executing
@@ -40,7 +40,7 @@ class PureEvalIntegration(Integration):
 
         @add_global_event_processor
         def add_executing_info(event, hint):
-            # type: (Event, Optional[Hint]) -> Optional[Event]
+            # type: (SentryEvent, Optional[Hint]) -> Optional[SentryEvent]
             if Hub.current.get_integration(PureEvalIntegration) is None:
                 return event
 

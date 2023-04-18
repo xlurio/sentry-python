@@ -113,7 +113,7 @@ class Memo(object):
 
 
 def serialize(event, **kwargs):
-    # type: (Event, **Any) -> Event
+    # type: (SentryEvent, **Any) -> Event
     memo = Memo()
     path = []  # type: List[Segment]
     meta_stack = []  # type: List[Dict[str, Any]]

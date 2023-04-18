@@ -27,7 +27,7 @@ except ImportError:
 if TYPE_CHECKING:
     from typing import Any, Dict, Optional
 
-    from sentry_sdk._types import EventProcessor, Event, ExcInfo, Hint
+    from sentry_sdk._types import EventProcessor, SentryEvent, ExcInfo, Hint
 
     from arq.jobs import Job
     from arq.typing import WorkerCoroutine
@@ -128,7 +128,7 @@ def _capture_exception(exc_info):
 def _make_event_processor(ctx, *args, **kwargs):
     # type: (Dict[Any, Any], *Any, **Any) -> EventProcessor
     def event_processor(event, hint):
-        # type: (Event, Hint) -> Optional[Event]
+        # type: (SentryEvent, Hint) -> Optional[SentryEvent]
 
         hub = Hub.current
 

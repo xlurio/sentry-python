@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 
     from sanic.request import Request, RequestParameters
 
-    from sentry_sdk._types import Event, EventProcessor, Hint
+    from sentry_sdk._types import SentryEvent, EventProcessor, Hint
     from sanic.router import Route
 
 try:
@@ -304,7 +304,7 @@ def _capture_exception(exception):
 def _make_request_processor(weak_request):
     # type: (Callable[[], Request]) -> EventProcessor
     def sanic_processor(event, hint):
-        # type: (Event, Optional[Hint]) -> Optional[Event]
+        # type: (SentryEvent, Optional[Hint]) -> Optional[SentryEvent]
 
         try:
             if hint and issubclass(hint["exc_info"][0], SanicException):

@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from typing import Optional
     from bottle import FileUpload, FormsDict, LocalRequest  # type: ignore
 
-    from sentry_sdk._types import EventProcessor, Event
+    from sentry_sdk._types import EventProcessor, SentryEvent
 
 try:
     from bottle import (
@@ -178,7 +178,7 @@ class BottleRequestExtractor(RequestExtractor):
 
 
 def _set_transaction_name_and_source(event, transaction_style, request):
-    # type: (Event, str, Any) -> None
+    # type: (SentryEvent, str, Any) -> None
     name = ""
 
     if transaction_style == "url":

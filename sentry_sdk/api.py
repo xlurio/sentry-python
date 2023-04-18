@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from typing import Union
 
     from sentry_sdk._types import (
-        Event,
+        SentryEvent,
         Hint,
         Breadcrumb,
         BreadcrumbHint,

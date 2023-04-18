@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from typing import Any
     from typing import Optional
 
-    from sentry_sdk._types import Event, Hint
+    from sentry_sdk._types import SentryEvent, Hint
 
 
 class SparkIntegration(Integration):
@@ -70,7 +70,7 @@ def patch_spark_context_init():
 
             @scope.add_event_processor
             def process_event(event, hint):
-                # type: (Event, Hint) -> Optional[Event]
+                # type: (SentryEvent, Hint) -> Optional[SentryEvent]
                 with capture_internal_exceptions():
                     if Hub.current.get_integration(SparkIntegration) is None:
                         return event

@@ -66,7 +66,7 @@ if TYPE_CHECKING:
 
     from sentry_sdk.scope import Scope
     from sentry_sdk.integrations.wsgi import _ScopedResponse
-    from sentry_sdk._types import Event, Hint, EventProcessor, NotImplementedType
+    from sentry_sdk._types import SentryEvent, Hint, EventProcessor, NotImplementedType
 
 
 if DJANGO_VERSION < (1, 10):
@@ -148,7 +148,7 @@ class DjangoIntegration(Integration):
 
         @add_global_event_processor
         def process_django_templates(event, hint):
-            # type: (Event, Optional[Hint]) -> Optional[Event]
+            # type: (SentryEvent, Optional[Hint]) -> Optional[SentryEvent]
             if hint is None:
                 return event
 

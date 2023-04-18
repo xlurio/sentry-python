@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from typing import Any
     from typing import Optional
 
-    from sentry_sdk._types import ExcInfo, Event, Hint
+    from sentry_sdk._types import ExcInfo, SentryEvent, Hint
 
 
 class SparkWorkerIntegration(Integration):
@@ -73,7 +73,7 @@ def _tag_task_context():
 
         @scope.add_event_processor
         def process_event(event, hint):
-            # type: (Event, Hint) -> Optional[Event]
+            # type: (SentryEvent, Hint) -> Optional[SentryEvent]
             with capture_internal_exceptions():
                 integration = Hub.current.get_integration(SparkWorkerIntegration)
                 task_context = TaskContext.get()

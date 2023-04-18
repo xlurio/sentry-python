@@ -36,7 +36,7 @@ if TYPE_CHECKING:
 
     from sentry_sdk.integrations import Integration
     from sentry_sdk._types import (
-        Event,
+        SentryEvent,
         Hint,
         Breadcrumb,
         BreadcrumbHint,

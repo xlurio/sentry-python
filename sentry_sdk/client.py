@@ -251,7 +251,7 @@ class _Client(object):
 
     def _prepare_event(
         self,
-        event,  # type: Event
+        event,  # type: SentryEvent
         hint,  # type: Hint
         scope,  # type: Optional[Scope]
     ):
@@ -374,7 +374,7 @@ class _Client(object):
 
     def _should_capture(
         self,
-        event,  # type: Event
+        event,  # type: SentryEvent
         hint,  # type: Hint
         scope=None,  # type: Optional[Scope]
     ):
@@ -396,7 +396,7 @@ class _Client(object):
 
     def _should_sample_error(
         self,
-        event,  # type: Event
+        event,  # type: SentryEvent
     ):
         # type: (...) -> bool
         not_in_sample_rate = (
@@ -415,7 +415,7 @@ class _Client(object):
     def _update_session_from_event(
         self,
         session,  # type: Session
-        event,  # type: Event
+        event,  # type: SentryEvent
     ):
         # type: (...) -> None
 
@@ -450,7 +450,7 @@ class _Client(object):
 
     def capture_event(
         self,
-        event,  # type: Event
+        event,  # type: SentryEvent
         hint=None,  # type: Optional[Hint]
         scope=None,  # type: Optional[Scope]
     ):

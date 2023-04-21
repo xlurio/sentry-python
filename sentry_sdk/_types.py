@@ -1,3 +1,6 @@
+from logging import LogRecord
+
+
 try:
     from typing import TYPE_CHECKING as TYPE_CHECKING
 except ImportError:
@@ -26,78 +29,108 @@ if TYPE_CHECKING:
         Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]
     ]
 
+    class AppContext(TypedDict):
+        app_name: NotRequired[str]
+        app_start_time: NotRequired[str]
+        app_version: NotRequired[str]
+        app_identifier: NotRequired[str]
+        build_type: NotRequired[str]
+        app_memory: NotRequired[int]
 
     class Device(TypedDict):
         name: NotRequired[str]
-        manufacturer: NotRequired[str]
-        brand: NotRequired[str]
-        family: NotRequired[str]
-        model: NotRequired[str]
         family: NotRequired[str]
         model: NotRequired[str]
         model_id: NotRequired[str]
-        archs: NotRequired[list[str]]
+        architecture: NotRequired[str]
         battery_level: NotRequired[float]
-        charging: NotRequired[bool]
+        orientation: NotRequired[Literal["portrait", "landscape"]]
+        manufacturer: NotRequired[str]
+        brand: NotRequired[str]
+        screen_height_pixels: NotRequired[int]
+        screen_width_pixels: NotRequired[int]
+        screen_density: NotRequired[float]
+        screen_dpi: NotRequired[int]
         online: NotRequired[bool]
+        charging: NotRequired[bool]
+        low_memory: NotRequired[bool]
         simulator: NotRequired[bool]
         memory_size: NotRequired[int]
         free_memory: NotRequired[int]
         usable_memory: NotRequired[int]
-        low_memory: NotRequired[bool]
         storage_size: NotRequired[int]
         free_storage: NotRequired[int]
         external_storage_size: NotRequired[int]
         external_free_storage: NotRequired[int]
-        screen_width_pixels: NotRequired[int]
-        screen_height_pixels: NotRequired[int]
-        screen_density: NotRequired[float]
-        screen_dpi: NotRequired[int]
-        boot_time: NotRequired[datetime.date]
-        timezone: NotRequired[datetime.timezone]
-        id: NotRequired[str]
-        language: NotRequired[str]
-        locale: NotRequired[str]
-        connection_type: NotRequired[str]
-        battery_temperature: NotRequired[float]
+        boot_time: NotRequired[str]
         processor_count: NotRequired[int]
-        processor_frequency: NotRequired[float]
         cpu_description: NotRequired[str]
-
+        processor_frequency: NotRequired[float]
+        device_type: NotRequired[str]
+        battery_status: NotRequired[str]
+        device_unique_identifier: NotRequired[str]
+        supports_vibration: NotRequired[bool]
+        supports_accelerometer: NotRequired[bool]
+        supports_gyroscope: NotRequired[bool]
+        supports_audio: NotRequired[bool]
+        supports_location_service: NotRequired[bool]
 
     class OperatingSystem(TypedDict):
         name: NotRequired[str]
         version: NotRequired[str]
-        raw_description: NotRequired[str]
         build: NotRequired[str]
         kernel_version: NotRequired[str]
-        rooted: NotRequired[bool]
 
+    class CultureContext(TypedDict):
+        calendar: NotRequired[str]
+        display_name: NotRequired[str]
+        locale: NotRequired[str]
+        is_24_hour_format: NotRequired[bool]
+        timezone: NotRequired[datetime.timezone]
+
+    class ResponseContext(TypedDict):
+        type: NotRequired[str]
+        cookies: NotRequired[dict[list[list[str]]] | dict[str, str]]
+        headers: NotRequired[dict[str, str]]
+        status_code: int
+        body_size: int
 
     class SentryRuntime(TypedDict):
         name: NotRequired[str]
         version: NotRequired[str]
         raw_description: NotRequired[str]
 
-
     class Contexts(TypedDict):
+        app: NotRequired[AppContext]
         trace: NotRequired[SpanContext]
         device: NotRequired[Device]
         os: NotRequired[OperatingSystem]
-        runtime: NotRequired[SentryRuntime]
+        culture: NotRequired[CultureContext]
+        response: NotRequired[ResponseContext]
 
+    class Span(TypedDict):
+        description: NotRequired[str]
+        op: NotRequired[str]
+        status: NotRequired[str]
+        parent_span_id: NotRequired[str]
+        sampled: NotRequired[bool]
+        span_id: NotRequired[str]
+        trace_id: NotRequired[str]
+        tags: NotRequired[dict[str, Any]]
+        data: NotRequired[dict[str, Any]]
+        start_timestamp: NotRequired[datetime.datetime]
+        end_timestamp: NotRequired[datetime.datetime]
+        instrumenter: NotRequired[Literal["sentry", "otel"]]
 
     class SentryPackage(TypedDict):
         name: NotRequired[str]
         version: NotRequired[str]
 
-
     class SDKVersion(TypedDict):
         name: NotRequired[str]
         version: NotRequired[str]
         deserialized_packages: NotRequired[set[SentryPackage]]
-        deserialized_integrations:  NotRequired[set[str]]
-        
+        deserialized_integrations: NotRequired[set[str]]
 
     class Request(TypedDict):
         url: NotRequired[str]
@@ -111,44 +144,52 @@ if TYPE_CHECKING:
         other: NotRequired[dict[str, str]]
         fragment: NotRequired[str]
 
-
     class Geo(TypedDict):
         city: NotRequired[str]
         country_code: NotRequired[str]
         region: NotRequired[str]
 
-
     class User(TypedDict):
         email: NotRequired[str]
         id: NotRequired[str]
         username: NotRequired[str]
-        segment:  NotRequired[str]
+        segment: NotRequired[str]
         ip_address: NotRequired[str]
         name: NotRequired[str]
         geo: NotRequired[Geo]
         data: NotRequired[dict[str, str]]
 
+    Severity = Literal["fatal", "error", "warning", "log", "info", "debug"]
 
     class Breadcrumb(TypedDict):
-        timestamp: NotRequired[datetime.date]
-        message: NotRequired[str]
         type: NotRequired[str]
-        data: NotRequired[dict[str, Any]]
+        level: NotRequired[Severity]
+        event_id: NotRequired[str]
         category: NotRequired[str]
-        level: NotRequired[str]
-
+        message: NotRequired[str]
+        data: NotRequired[dict[str, Any]]
+        timestamp: NotRequired[datetime.date]
 
     class SentryStackFrame(TypedDict):
+        filename: NotRequired[str]
         function: NotRequired[str]
         module: NotRequired[str]
-        filename: NotRequired[str]
-        abs_path: NotRequired[str]
+        platform: NotRequired[str]
         lineno: NotRequired[int]
-        pre_context: NotRequired[list[str]]
+        colno: NotRequired[int]
+        abs_path: NotRequired[str]
         context_line: NotRequired[str]
+        pre_context: NotRequired[list[str]]
         post_context: NotRequired[list[str]]
+        in_app: NotRequired[bool]
+        instruction_addr: NotRequired[str]
+        addr_mode: NotRequired[str]
         vars: NotRequired[dict[str, Any]]
+        debug_id: NotRequired[str]
 
+    class StackTrace(TypedDict):
+        frames: NotRequired[list[SentryStackFrame]]
+        frames_omitted: NotRequired[tuple[int, ...]]
 
     class Mechanism(TypedDict):
         type: str
@@ -158,50 +199,119 @@ if TYPE_CHECKING:
         meta: dict[str, Any]
         errno: dict[str, Any]
         number: NotRequired[int]
-
+        data: NotRequired[dict[str, str | bool]]
 
     class SentryException(TypedDict):
         type: NotRequired[str]
         value: NotRequired[str]
         module: NotRequired[str]
         thread_id: NotRequired[str]
-        stacktrace: NotRequired[list[SentryStackFrame]]
+        stacktrace: NotRequired[StackTrace]
         mechanism: NotRequired[Mechanism]
 
+    DurationUnit = Literal[
+        "nanosecond",
+        "microsecond",
+        "millisecond",
+        "second",
+        "minute",
+        "hour",
+        "day",
+        "week",
+    ]
+    InformationUnit = Literal[
+        "bit",
+        "byte",
+        "kilobyte",
+        "kibibyte",
+        "megabyte",
+        "mebibyte",
+        "gigabyte",
+        "terabyte",
+        "tebibyte",
+        "petabyte",
+        "exabyte",
+        "exbibyte",
+    ]
+    FractionUnit = Literal["ratio", "percent"]
+    NoneUnit = Literal["", "none"]
+
+    class Measurements(TypedDict):
+        value: float
+        unit: Literal[DurationUnit, InformationUnit, FractionUnit, NoneUnit]
+
+    class WasmDebugImage(TypedDict):
+        type: Literal["wasm"]
+        debug_id: str
+        code_id: str | None
+        code_file: str
+        debug_file: str | None
+
+    class SourceMapDebugImage(TypedDict):
+        type: Literal["sourcemap"]
+        code_file: str
+        debug_id: str
+
+    class DebugMeta(TypedDict):
+        images: NotRequired[WasmDebugImage | SourceMapDebugImage]
+
+    class TransactionInfo(TypedDict):
+        source: NotRequired[
+            Literal["custom", "url", "route", "view", "component", "task"]
+        ]
+
+    class SentryThread(TypedDict):
+        id: NotRequired[int]
+        name: NotRequired[str]
+        stacktrace: StackTrace
+        crashed: NotRequired[bool]
+        current: NotRequired[bool]
 
     class SentryEvent(TypedDict):
         event_id: NotRequired[str]
-        contexts: Contexts
+        message: NotRequired[str]
+        timestamp: NotRequired[datetime.datetime]
+        start_timestamp: NotRequired[datetime.datetime]
+        level: NotRequired[Severity]
+        platform: NotRequired[str]
+        logger: NotRequired[str]
+        server_name: NotRequired[str]
+        release: NotRequired[str]
+        dist: NotRequired[str]
+        environment: NotRequired[str]
         sdk: NotRequired[SDKVersion]
         request: NotRequired[Request]
-        tags: NotRequired[dict[str, str]]
-        release: NotRequired[str]
-        environment: NotRequired[str]
-        platform: NotRequired[str]
-        user: NotRequired[User]
-        server_name: NotRequired[str]
-        dist: NotRequired[str]
-        breadcrumbs: NotRequired[list[Breadcrumb]]
-        timestamp: datetime.date
-        message: NotRequired[str]
-        logger: NotRequired[str]
-        level: NotRequired[str]
+        transaction: NotRequired[str]
+        modules: NotRequired[dict[str, str]]
+        fingerprint: NotRequired[str]
         exception: NotRequired[list[SentryException]]
+        breadcrumbs: NotRequired[list[Breadcrumb]]
+        contexts: Contexts
+        tags: NotRequired[dict[str, Any]]
+        extra: NotRequired[dict[str, Any]]
+        user: NotRequired[User]
+        type: NotRequired[Literal["transaction", "profile", "replay_event"]]
+        spans: NotRequired[list[Span]]
+        measurements: NotRequired[Measurements]
+        debug_meta: NotRequired[DebugMeta]
+        transaction_info: NotRequired[TransactionInfo]
+        threads: NotRequired[SentryThread]
 
     class Attachment(TypedDict):
         serializable: NotRequired[dict[str, Any] | list[Any]]
         pathname: NotRequired[str]
         filename: NotRequired[str]
         content_type: NotRequired[str]
-        add_to_transactions: bool
-        attachment_type: str
+        attachment_type: NotRequired[str]
+        add_to_transactions: NotRequired[bool]
 
     class Hint(TypedDict):
-        internal_storage: dict[str, Any]
+        event_id: NotRequired[str]
+        exc_info: tuple[type[BaseException], BaseException, TracebackType]
         attachments: list[Attachment]
-        screenshot: NotRequired[Attachment]
-        view_hierarchy: NotRequired[Attachment]
-
+        data: NotRequired[Any]
+        integrations: NotRequired[list[str]]
+        log_record: NotRequired[LogRecord]
 
     BreadcrumbHint = Dict[str, Any]
 
